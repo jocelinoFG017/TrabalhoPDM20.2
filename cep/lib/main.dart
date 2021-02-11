@@ -1,119 +1,63 @@
-import 'dart:convert';
-
+import 'package:cep/clima.dart';
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart' as http;
+import 'cep.dart';
 
-main() {
-  runApp(ConsultaCepApp());
+void main() {
+  runApp(MaterialApp(
+    title: 'Navigation Basics',
+    home: HomePage(),
+  ));
 }
 
-class ConsultaCepApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _ConsultaCepApp();
-  }
-}
-
-class _ConsultaCepApp extends State<ConsultaCepApp> {
-  var controllerText = TextEditingController();
-  var cidade = "Teste";
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.red),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Consulta CEP'),
+          backgroundColor: Colors.blueGrey,
+          title: Text('Menu'),
         ),
         drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: const <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(
-                  'Trabalho final PDM-SI2020.2',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
+          child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+            DrawerHeader(
+              child: Text('Menu'),
+              decoration: BoxDecoration(
+                color: Colors.blueGrey,
               ),
-              ListTile(
-                leading: Icon(Icons.cloud),
-                title: Text('Previsão do tempo'),
-              ),
-              ListTile(
-                leading: Icon(Icons.add_location_alt_outlined),
-                title: Text('Consulta de CEP'),
-              ),
-              ListTile(
-                leading: Icon(Icons.add),
-                title: Text('Crud'),
-              ),
-            ],
-          ),
-        ), //menu lateral
+            ),
+            ListTile(
+              leading: Icon(Icons.add_location_alt_outlined),
+              title: Text('Consulta de CEP'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ConsultaCepApp()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.cloud),
+              title: Text('Consulta de clima'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                );
+              },
+            ),
+          ]),
+        ),
+        //corpo da aplicação
         body: Container(
-          margin: EdgeInsets.all(10),
+          margin: EdgeInsets.all(15),
           child: Column(
-            children: [
-              TextField(
-                controller: this.controllerText,
-                decoration: InputDecoration(
-                  labelText: 'Informe um CEP',
-                ),
-              ),
-              RaisedButton(
-                child: Text('buscar'),
-                onPressed: () {
-                  realizaConsulta();
-                },
-              ),
-              Material(
-                elevation: 2,
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      Text(
-                        this.cidade,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.home),
-                        color: Theme.of(context).primaryColor,
-                        onPressed: () {},
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
+            children: [Text('seja bem vindo ao app')],
           ),
         ),
       ),
     );
-  }
-
-  realizaConsulta() async {
-    String url = 'http://cep.republicavirtual.com.br/web_cep.php?cep=';
-    url += this.controllerText.text;
-    url += '&formato=jsonp';
-
-    var resposta = await http.get(url);
-    var json = jsonDecode(resposta.body);
-
-    print(json['cidade']);
-
-    setState(() {
-      this.cidade = json['cidade'] + ' / ' + json['uf'];
-    });
-
-    print(this.cidade);
   }
 }
