@@ -19,7 +19,7 @@ class _HomeState extends State<Home> {
 
   Future getWeather() async {
     http.Response response = await http.get(
-        'http://api.openweathermap.org/data/2.5/weather?q=SaoPaulo&appid=f0caec18048047802c5be2ff6ee48799');
+        'http://api.openweathermap.org/data/2.5/weather?q=California&appid=f0caec18048047802c5be2ff6ee48799');
     var results = jsonDecode(response.body);
     setState(() {
       this.temp = results['main']['temp'];
@@ -38,82 +38,86 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            height: MediaQuery.of(context).size.height / 3,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.red,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: Text(
-                    "atualmente em ...",
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Column(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.red,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10.0),
+                    child: Text(
+                      "California/US",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Text(
+                    temp != null ? temp.toString() + '\u00B0' : 'Loading',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14.0,
+                        fontSize: 40.0,
                         fontWeight: FontWeight.w600),
                   ),
-                ),
-                Text(
-                  temp != null ? temp.toString() + '\u00B0' : 'Loading',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w600),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    currently != null ? currently.toString() : 'Loading',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w600),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      currently != null ? currently.toString() : 'Loading',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-              child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: ListView(
-              children: <Widget>[
-                ListTile(
-                  leading: FaIcon(FontAwesomeIcons.thermometerHalf),
-                  title: Text('Temperatura'),
-                  trailing: Text(
-                      temp != null ? temp.toString() + '\u00B0' : 'Loading'),
-                ),
-                ListTile(
-                  leading: FaIcon(FontAwesomeIcons.cloud),
-                  title: Text('clima'),
-                  trailing: Text(
-                      description != null ? description.toString() : 'Loading'),
-                ),
-                ListTile(
-                  leading: FaIcon(FontAwesomeIcons.sun),
-                  title: Text('Humidade'),
-                  trailing: Text(
-                    humidity != null ? humidity.toString() : 'Loading',
+            Expanded(
+                child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.thermometerHalf),
+                    title: Text('Temperatura'),
+                    trailing: Text(
+                        temp != null ? temp.toString() + '\u00B0' : 'Loading'),
                   ),
-                ),
-                ListTile(
-                  leading: FaIcon(FontAwesomeIcons.wind),
-                  title: Text('Vel. dos Ventos'),
-                  trailing: Text(
-                    windSpeed != null ? windSpeed.toString() : 'Loading',
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.cloud),
+                    title: Text('Clima'),
+                    trailing: Text(description != null
+                        ? description.toString()
+                        : 'Loading'),
                   ),
-                ),
-              ],
-            ),
-          ))
-        ],
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.sun),
+                    title: Text('Humidade'),
+                    trailing: Text(
+                      humidity != null ? humidity.toString() : 'Loading',
+                    ),
+                  ),
+                  ListTile(
+                    leading: FaIcon(FontAwesomeIcons.wind),
+                    title: Text('Vel. dos Ventos'),
+                    trailing: Text(
+                      windSpeed != null ? windSpeed.toString() : 'Loading',
+                    ),
+                  ),
+                ],
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }

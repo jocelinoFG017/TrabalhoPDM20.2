@@ -1,4 +1,5 @@
 import 'package:cep/clima.dart';
+import 'package:cep/crud/index.dart';
 import 'package:flutter/material.dart';
 
 import 'cep.dart';
@@ -48,13 +49,21 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text('Crud'),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => AppCrudPessoa()));
+              },
+            ),
           ]),
         ),
         //corpo da aplicação
         body: Container(
           margin: EdgeInsets.all(15),
           child: Column(
-            children: [Text('seja bem vindo ao app')],
+            children: [Text('Seja bem vindo ao app')],
           ),
         ),
       ),
